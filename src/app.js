@@ -7,7 +7,7 @@ require('dotenv').config({ path: './.env'});
 const app = express();
 
 app.use(cors({
-	origin: ['https://woog2roid.github.io'],
+	origin: ['https://woog2roid.github.io', 'https://mma-fighter-finder-dkfty.run.goorm.io'],
 }));
 
 app.use((req, res, next) => {
@@ -18,21 +18,20 @@ app.use((req, res, next) => {
 	}
 });
 
-app.get('/', (req, res, next) => {
-	api(req.query.fighter, (data) => {
-		try {
-			if (!req.query.fighter) {
-				//URL이 잘못됨: fighter query가 없는 오류
-				res.status(400).send({code:'query error'});
-				return;
-			} else {
-				res.status(200).json(data);
-				return;
-			}
-		} catch(err) {
-			next(err);
+app.get('/', async(req, res, next) => {
+	try {
+		if (!req.query.fighter) {
+			//URL이 잘못됨: fighter query가 없는 오류
+			res.status(400).send({code:'query error'});
+			return;
+		} else {
+			const data = await api(req.query.fighter);
+			res.status(200).json(data);
+			return;
 		}
-	});
+	} catch(err) {
+		next(err);
+	}
 });
 
 app.use((err, req, res, next) => {
