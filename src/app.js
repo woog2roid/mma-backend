@@ -7,7 +7,7 @@ require('dotenv').config({ path: './.env'});
 const app = express();
 
 app.use(cors({
-	origin: ['https://woog2roid.github.io', 'https://service.woog2roid.dev'],
+	origin: ['https://woog2roid.github.io', 'https://service.woog2roid.dev', 'https://mma.woog2roid.dev'],
 }));
 
 app.use((req, res, next) => {
